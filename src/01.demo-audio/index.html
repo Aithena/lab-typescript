@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+<script src="ware.js"></script>
+    </head>
+<body>
+<div id="contener">
+
+</div>
+<div><label>采样率:</label><span id="divSampleRate"></span></div>
+<div id="timeInfo"></div>
+<div>
+    <button id="btnPlay" style="display: none;">play</button>
+</div>
+<script>
+var audioWave;
+window.onload=function(){
+    audioWave=new AudioWave(document.getElementById('contener'),{
+        time:function(owner, currentTime){
+            document.getElementById("timeInfo").innerText=currentTime.toFixed(2)+'s'
+        },
+        click:function(owner, time){
+            document.getElementById('btnPlay').innerText=audioWave.video.paused?'play':'pause';
+        },
+        loaded:function(owner){
+            document.getElementById('divSampleRate').innerText=owner.sampleRate;
+            let btn=document.getElementById('btnPlay');
+                btn.style.display='';
+                btn.onclick=function(){
+                    if(audioWave.video.paused){
+                        audioWave.play();
+                        btn.innerText='pause';
+                    }else{
+                        audioWave.stop();
+                        btn.innerText='play';
+                    }
+                }
+        }
+    });
+    audioWave.load('1.mp3');
+}
+</script>
+</body>
